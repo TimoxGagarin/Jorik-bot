@@ -51,7 +51,6 @@ def send_valute(code):
     try:
         html = get_html(VALUTE_URL)
         if html.status_code == 200:
-            print(html.status_code)
             valutes = []
             for page in range(1,4):
                 for valute in get_valute_content(html.text):
