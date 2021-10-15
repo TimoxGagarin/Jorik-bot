@@ -6,7 +6,6 @@ from vk_api.exceptions import ApiError
 from bs4 import BeautifulSoup
 from requests.exceptions import ConnectionError, ReadTimeout
 
-VALUTE_URL = 'https://converter.by/currency/cbr'
 WEATHER_URL = 'https://wttr.in'
 CATS_URL = 'https://yandex.by/images/search?text=котики'
 
@@ -45,22 +44,6 @@ def get_valute_content(html):
             valute[keys[i]] = item.find_all('td')[i].get_text()
         valutes.append(valute)
     return valutes
-    
-
-def send_valute(code):
-    try:
-        html = get_html(VALUTE_URL)
-        if html.status_code == 200:
-            valutes = []
-            for page in range(1,4):
-                for valute in get_valute_content(html.text):
-                    if valute['code'] != None:
-                        if valute['code'].lower().strip() == code.lower().strip() and valute['code'].lower() != None:              
-                            return f'{valute["valute"]}:\r\nКурс: {valute["nomin"]} {valute["code"]} - {valute["course"]} RUS'
-        else:
-            return 'ошибка на сервере валют! Не могу дать ответ'
-    except requests.ConnectionError:
-        return 'ошибка c соединением на сервере!'
 
 
 def send_weather(city):

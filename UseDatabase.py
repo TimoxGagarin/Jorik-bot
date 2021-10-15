@@ -35,6 +35,7 @@ def remove_from_db(user_id):
 
 #STATUSES
 def check_status(user_id):
+    print(user_id)
     conn = pymysql.connect(**dbconfig)
     try:
         with conn.cursor() as cursor:
