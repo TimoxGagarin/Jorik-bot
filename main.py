@@ -12,7 +12,6 @@ from parsers import send_weather, send_description, send_cats_urls
 import datetime as dt
 from threading import Thread, Timer, enumerate
 import emoji as moji
-import msvcrt
 import time
 import sys
 from io import BytesIO
@@ -136,7 +135,6 @@ def upload_photo(photo):
 
 #Function kick user from the chat
 def kick_user(user_id):
-    to = name_or_nick(user_id)
     remove_from_db(user_id)
     vk_session.method('messages.removeChatUser', {'chat_id':message.chat_id, 'user_id': user_id, 'random_id':0})
 
@@ -454,7 +452,7 @@ def chat_requests_processing():
         if agreement.is_alive():
             global wife_id
             global husband_id
-            if message.text_low == f'[club205699866|@club205699866] да' and message.user_id == wife_id:
+            if message.text_low == f'[club{GROUP_ID}|@{vk_session.method("groups.getById", {"group_id": GROUP_ID})[0]["screen_name"]}] да' and message.user_id == wife_id:
                 marry(husband_id, wife_id)
                 husband = name_or_nick(husband_id)
                 wife = name_or_nick(wife_id)
@@ -462,7 +460,7 @@ def chat_requests_processing():
                 agreement.cancel()
                 wife_id = None
                 husband_id = None
-            elif message.text_low == '[club{GROUP_ID}|@club{GROUP_ID}] нет' and message.user_id == wife_id:
+            elif message.text_low == f'[club{GROUP_ID}|@{vk_session.method("groups.getById", {"group_id": GROUP_ID})[0]["screen_name"]}] нет' and message.user_id == wife_id:
                 sender(f'{husband}, {wife} отверг(ла) ваше предложение.')
                 agreement.cancel()
                 wife_id = None
