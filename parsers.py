@@ -27,24 +27,6 @@ def get_html(url, params=None):
     r = requests.get(url, headers=HEADERS, params=params)
     return r
 
-   
-def get_valute_content(html):
-    valutes = []
-    soup = BeautifulSoup(html, 'html.parser')
-    items = soup.find_all('tr')
-    for item in items:
-        valute = {
-            'valute': None,
-            'code': None,
-            'nomin': None,
-            'course': None,
-        }
-        keys = ['code', 'nomin', 'valute', 'course']
-        for i in range(0, len(item.find_all('td'))):
-            valute[keys[i]] = item.find_all('td')[i].get_text()
-        valutes.append(valute)
-    return valutes
-
 
 def send_weather(city):
     try:
@@ -74,7 +56,7 @@ def send_description(name):
         return f'что-то пошло не так. Возможно вы имели ввиду:\r\n{list_opt}'
 
 
-def get_cats_url(html):
+def get_cat_url(html):
     soup = BeautifulSoup(html, 'html.parser')
     items = soup.find_all('div', class_='serp-item')
     i = randint(0, len(items)-1)
@@ -82,11 +64,11 @@ def get_cats_url(html):
     return url
 
     
-def send_cat():
+def send_cats_urls():
     try:
         html = get_html(CATS_URL)
         if html.status_code == 200:
-            return get_cats_url(html.text)
+            return 'http:' + get_cat_url(html.text)
         else:
             return 'Ошибка на сервере котиков! Не могу дать ответ'
     except requests.ConnectionError:
