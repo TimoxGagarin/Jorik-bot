@@ -3,7 +3,7 @@ import datetime as dt
 from config import dbconfig
 
 
-#REGISTRATION
+# REGISTRATION
 def register(user_id):
     if user_id < 0:
         return
@@ -12,7 +12,8 @@ def register(user_id):
         with conn.cursor() as cursor:
             result = cursor.execute(f"SELECT * FROM users WHERE user_id={user_id}")
             if result == 0:
-                cursor.execute(f"INSERT INTO users(user_id, nick, status, partner, preds) values({user_id}, '', 0 , '', 0)")
+                cursor.execute(f"INSERT INTO users(user_id, nick, status, partner, preds) "
+                               f"values({user_id}, '', 0 , '', 0)")
                 conn.commit()
     except pymysql.err.OperationalError:
         pass
@@ -34,7 +35,7 @@ def remove_from_db(user_id):
         conn.close()
 
 
-#STATUSES
+# STATUSES
 def check_status(user_id):
     conn = pymysql.connect(**dbconfig)
     try:
@@ -83,7 +84,7 @@ def set_status(user_id, status):
         conn.close()
 
 
-#NICKNAMES
+# NICKNAMES
 def check_nick(user_id):
     conn = pymysql.connect(**dbconfig)
     try:
@@ -131,7 +132,7 @@ def set_nick(user_id, nick):
         conn.close()
 
 
-#PREDS
+# PREDS
 def check_preds(user_id):
     conn = pymysql.connect(**dbconfig)
     try:
@@ -167,10 +168,9 @@ def add_pred(user_id):
     try:
         with conn.cursor() as cursor:
             result = cursor.execute(f"SELECT * FROM users WHERE user_id={user_id}")
+            pr = 0
             if result == 1:
                 pr = check_preds(user_id)
-                if pr == None:
-                    pr = 0
                 cursor.execute(f"UPDATE users SET preds='{pr + 1}' WHERE user_id={user_id}")
                 conn.commit()
             else:
@@ -247,7 +247,6 @@ def check_marriages():
     marriages = set()
     try:
         with conn.cursor() as cursor:
-            i = 0
             result = cursor.execute(f"SELECT partner FROM users")
             for i in range(0, result):
                 marriage = cursor.fetchone()[0]
@@ -263,10 +262,9 @@ def check_marriages():
 
 def check_marriage(user_id):
     conn = pymysql.connect(**dbconfig)
-    marriages = set()
     try:
         with conn.cursor() as cursor:
-            result = cursor.execute(f"SELECT partner FROM users WHERE user_id='{user_id}'")
+            cursor.execute(f"SELECT partner FROM users WHERE user_id='{user_id}'")
             marriage = cursor.fetchone()[0]
             conn.commit()
             return marriage

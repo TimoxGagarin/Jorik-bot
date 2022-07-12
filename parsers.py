@@ -1,16 +1,15 @@
 import requests
 import wikipedia
 from random import randint
-import datetime as dt
 from vk_api.exceptions import ApiError
 from bs4 import BeautifulSoup
-from requests.exceptions import ConnectionError, ReadTimeout
 
 WEATHER_URL = 'https://wttr.in'
 CATS_URL = 'https://yandex.by/images/search?text=котики'
 
 HEADERS = {
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,'
+              'image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'user-agent': '*/*',
     'Accept-Language': 'ru',
 }
@@ -30,7 +29,7 @@ def get_html(url, params=None):
 
 def send_weather(city):
     try:
-        if city == None:
+        if city is None:
             return 'введите в команду город!'
         html = get_html(f'{WEATHER_URL}/{city}', params=WEATHER_PARAMS)
         if html.status_code == 200:
@@ -60,7 +59,8 @@ def get_cat_url(html):
     soup = BeautifulSoup(html, 'html.parser')
     items = soup.find_all('div', class_='serp-item')
     i = randint(0, len(items)-1)
-    url = items[i].find('div', class_='serp-item__preview').find('a', class_='serp-item__link').find('img', class_='serp-item__thumb').get('src')
+    url = items[i].find('div', class_='serp-item__preview').find('a', class_='serp-item__link')\
+        .find('img', class_='serp-item__thumb').get('src')
     return url
 
     

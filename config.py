@@ -1,12 +1,12 @@
-main_token = input('Acces token: ')
-CHAT_ID = None
+main_token = input('Access token: ')
+CHAT_ID = ''
 GROUP_ID = input('Group id: ')
 
 print('DB Config')
-dbconfig = { 'host': input('Host: '),
-             'user': input('User: '),
-             'password': input('Password: '),
-             'database': input('Database name: '), }
+dbconfig = {'host': input('Host: '),
+            'user': input('User: '),
+            'password': input('Password: '),
+            'database': input('Database name: '), }
 
 commands = {
     'инфа ': 0,
