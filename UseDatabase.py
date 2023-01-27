@@ -183,7 +183,7 @@ def add_pred(user_id):
         conn.close()
 
 
-def remove_pred(user_id):
+def remove_pred_db(user_id):
     conn = pymysql.connect(**dbconfig)
     try:
         with conn.cursor() as cursor:

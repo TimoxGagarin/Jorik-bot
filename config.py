@@ -1,12 +1,11 @@
-main_token = input('Access token: ')
+main_token =''
+GROUP_ID = 0
 CHAT_ID = ''
-GROUP_ID = input('Group id: ')
 
-print('DB Config')
-dbconfig = {'host': input('Host: '),
-            'user': input('User: '),
-            'password': input('Password: '),
-            'database': input('Database name: '), }
+dbconfig = { 'host': '',
+             'user': '',
+             'password': '',
+             'database': '', }
 
 commands = {
     'инфа ': 0,
@@ -34,7 +33,8 @@ commands = {
     'котик': 1,
     'пред ': 4,
     'снять пред ': 4,
-    }
+    'рассылка ': 5,
+}
 
 temp_texts = {
     'WELCOMING': 'Привет!',
