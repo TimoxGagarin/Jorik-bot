@@ -5,7 +5,6 @@ from vk_api.exceptions import ApiError
 from bs4 import BeautifulSoup
 
 WEATHER_URL = 'https://wttr.in'
-CATS_URL = 'https://yandex.by/images/search?text=котики'
 
 HEADERS = {
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,'
@@ -54,22 +53,6 @@ def send_description(name):
         list_opt = '\r\n'.join(e.options)
         return f'что-то пошло не так. Возможно вы имели ввиду:\r\n{list_opt}'
 
-
-def get_cat_url(html):
-    soup = BeautifulSoup(html, 'html.parser')
-    items = soup.find_all('div', class_='serp-item')
-    i = randint(0, len(items)-1)
-    url = items[i].find('div', class_='serp-item__preview').find('a', class_='serp-item__link')\
-        .find('img', class_='serp-item__thumb').get('src')
-    return url
-
     
 def send_cats_urls():
-    try:
-        html = get_html(CATS_URL)
-        if html.status_code == 200:
-            return 'http:' + get_cat_url(html.text)
-        else:
-            return 'Ошибка на сервере котиков! Не могу дать ответ'
-    except requests.ConnectionError:
-        return 'Сетевая ошибка! Не могу дать ответ'
+    return 'http://thecatapi.com/api/images/get'
