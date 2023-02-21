@@ -1,5 +1,5 @@
 from random import randint
-from config import temp_texts, mailing, CHAT_ID, GROUP_ID
+from config import temp_texts, mailing, CHAT_ID, GROUP_ID, BOT_NAME
 from Message import Message
 from UseDatabase import *
 from parsers import *
@@ -103,12 +103,14 @@ def get_id(name, event) -> bool:
 
 
 # Function send text message
-def sender(text='', keyboard=EMPTY_KEYBOARD, photo=None, wall_post='None'):
+def sender(text='', keyboard=None, photo=None, wall_post='None', disable_mentions=1, template=None):
     post = {
         'chat_id': CHAT_ID,
         'random_id': 0,
-        'keyboard': keyboard
+        'disable_mentions': disable_mentions,
     }
+    if keyboard is not None:
+        post['keyboard'] = keyboard
     if text != '':
         post['message'] = text
     if wall_post != '':
@@ -116,6 +118,8 @@ def sender(text='', keyboard=EMPTY_KEYBOARD, photo=None, wall_post='None'):
     if photo is not None:
         photo_info = upload_photo(BytesIO(requests.get(photo).content))
         post['attachment'] = f'photo{photo_info[0]}_{photo_info[1]}_{photo_info[2]}'
+    if template is not None:
+        post['template'] = template
     chat_session.method('messages.send', post)
 
 
@@ -151,8 +155,8 @@ def new_thread(func, args=[]):
 
 
 #Function have checking target of message
-def for_jorik() -> bool:
-    return message.text_low.startswith('жорик,')
+def for_bot() -> bool:
+    return message.text_low.startswith(f'{BOT_NAME},')
 
 
 # Function kick user if he wrote bad word from the list:

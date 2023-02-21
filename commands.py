@@ -18,11 +18,12 @@ from io import BytesIO
 import requests
 from vk_funcs import *
 from vk_info import *
+import json
 
 
 # send sticker with id
 def sticker(message):
-    num = message.text_low.replace('стикер ', '').strip()
+    num = message.text_low.text_low[7:].strip()
     try:
         send_stick(message.text_low.replace('стикер ', '').strip())
     except ApiError:
@@ -66,12 +67,12 @@ def marry_command(message, to):
         return
 
     def create_keyboard():
-        keyboard = vk_api.keyboard.VkKeyboard(one_time=False)
-        keyboard.add_button("Да", color=vk_api.keyboard.VkKeyboardColor.POSITIVE)
-        keyboard.add_button("Нет", color=vk_api.keyboard.VkKeyboardColor.NEGATIVE)
+        keyboard = vk_api.keyboard.VkKeyboard(inline=True)
+        keyboard.add_button(label="Да", color=vk_api.keyboard.VkKeyboardColor.POSITIVE)
+        keyboard.add_button(label="Нет", color=vk_api.keyboard.VkKeyboardColor.NEGATIVE)
         return keyboard.get_keyboard()
 
-    sender(f'Согласен(на) ли {wife_name} стать мужем(женой) {to}?', keyboard=create_keyboard())
+    sender(f'Согласен(на) ли {wife_name} стать мужем(женой) {to}?', keyboard=create_keyboard(), disable_mentions=0)
 
     def get_agreement(id1, id2):
         sender(f'{to}, время на согласие вышло. Повторите отправку команды позже.')
@@ -245,7 +246,7 @@ def give_status(message, to):
             sender(f'{to}, участника с таким именем не существует!')
             return
         set_status(user_id=user_id, status=int(status))
-        sender(f'{to}, {user_name} был установлен статус {status}!')
+        sender(f'{user_name} был установлен статус {status}!', disable_mentions=0)
     except ValueError:
         sender(f'{to}, некорректный ввод команды')
 
@@ -282,7 +283,7 @@ def remove_pred(message, to):
     if user_name == "Участника с таким именем не существует":
         sender(f'{to}, участника с таким именем не существует!')
         return
-    sender(f"У {user_name} было снято 1 предупреждение.")
+    sender(f"У {user_name} было снято 1 предупреждение.", disable_mentions=0)
     remove_pred_db(user_id=user_id)
 
 
@@ -311,3 +312,30 @@ def mailing_set(message, to):
     elif state == 'off':
         mailing = False
         sender(f'{to}, рассылка отключена')
+
+
+"""
+    def goods(to):
+    print(group_session.method('market.get', {'owner_id': -GROUP_ID}))
+    carousel = {
+                    "type": "carousel",
+                    "elements":[
+                        {
+                            "title": "Title",
+                            "description": "Description",
+                            "buttons": [
+                                {
+                                    "action":
+                                    {
+                                            "type": "open_link",
+                                            "label": "test",
+                                            "link": "https://vk.com",
+                                    }
+                                }
+                            ]
+                        },
+                    ]
+                }
+    carousel = json.dumps(carousel, ensure_ascii=False).encode('utf-8')
+    carousel = str(carousel.decode('utf-8'))
+    sender(text='da', template=carousel)"""

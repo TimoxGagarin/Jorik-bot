@@ -1,7 +1,6 @@
 import requests
 import wikipedia
 from random import randint
-from vk_api.exceptions import ApiError
 from bs4 import BeautifulSoup
 
 WEATHER_URL = 'https://wttr.in'

@@ -1,40 +1,12 @@
-main_token =''
-GROUP_ID = 0
-CHAT_ID = ''
+import os
+from dotenv import load_dotenv
 
-dbconfig = { 'host': '',
-             'user': '',
-             'password': '',
-             'database': '', }
-
-commands = {
-    'инфа ': 0,
-    'кто ': 0,
-    'стикер ': 0,
-    'погода ': 0,
-    'что такое ': 0,
-    'статусы': 0,
-    'команды': 0,
-    'запрети фразу ': 5,
-    'разреши фразу ': 5,
-    'запрещенные фразы': 5,
-    'новое приветствие:': 5,
-    'новое прощание:': 5,
-    'новый текст кика:': 5,
-    'статус ': 5,
-    'кик ': 4,
-    'обновить': 0,
-    'мне ник ': 1,
-    'ники': 0,
-    'преды': 0,
-    'брак ': 0,
-    'развод': 0,
-    'браки': 0,
-    'котик': 1,
-    'пред ': 4,
-    'снять пред ': 4,
-    'рассылка ': 5,
-}
+load_dotenv()
+ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
+GROUP_ID = int(os.getenv("GROUP_ID"))
+CHAT_ID = int(os.getenv("CHAT_ID"))
+BOT_NAME = os.getenv("BOT_NAME")
+DB_CONFIG = os.getenv("DB_CONFIG")
 
 temp_texts = {
     'WELCOMING': 'Привет!',
